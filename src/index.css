@@ -69,3 +69,8 @@ button:focus-visible {
 ul {
   list-style: none;
 }
+.color-ring-wrapper-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

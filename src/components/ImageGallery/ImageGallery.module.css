@@ -1,0 +1,19 @@
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.listItem {
+  /* width: 250px; */
+  margin: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  /* border-radius: 8px; */
+  transition: transform 0.3s ease-in-out;
+}
+.listItem:hover {
+  transform: scale(1.05);
+}
