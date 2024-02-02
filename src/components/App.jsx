@@ -2,45 +2,63 @@ import "./ SearchBar/SearchBar";
 import "./ImageGallery/ImageGallery";
 import { SearchBar } from "./ SearchBar/SearchBar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
-import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ColorRing } from "react-loader-spinner";
-const YOUR_ACCESS_KEY = "fXQHg9ptFikyE-Qr2hmDcUEOUtfUMXVDow0dA66Idg4";
+import { Toaster } from "react-hot-toast";
+import { FetchImages } from "../api";
+
 function App() {
+  const [query, SetQuery] = useState("");
+  const [page, SetPage] = useState(1);
   const [data, Setdata] = useState({
     items: [],
     loading: false,
     error: false,
   });
-  const SearchImages = async (query) => {
-    try {
-      Setdata({
-        items: [],
-        loading: true,
-        error: false,
-      });
-
-      const response = await axios.get(
-        `https://api.unsplash.com/search/photos?client_id=${YOUR_ACCESS_KEY}&query=${query}&lang=en`
-      );
-
-      console.log(response.data.results);
-      Setdata((prev) => {
-        return { ...prev, items: response.data.results };
-      });
-    } catch (error) {
-      Setdata((prev) => {
-        return { ...prev, error: true };
-      });
-    } finally {
-      Setdata((prev) => {
-        return { ...prev, loading: false };
-      });
-    }
+  const SearchImages = async (newQuery) => {
+    SetQuery(`${Date.now()}/${newQuery}`);
+    SetPage(1);
+    Setdata({
+      items: [],
+      loading: true,
+      error: false,
+    });
   };
+  const handleLoadMore = () => {
+    SetPage(page + 1);
+  };
+  useEffect(() => {
+    if (query === "") {
+      return;
+    }
+    async function FetchData() {
+      try {
+        Setdata((prev) => ({ ...prev, loading: true, error: false }));
+
+        const response = await FetchImages(query, page);
+
+        console.log(response);
+        Setdata((prev) => {
+          return { ...prev, items: [...prev.items, ...response] };
+        });
+      } catch (error) {
+        Setdata((prev) => {
+          return { ...prev, error: true };
+        });
+      } finally {
+        Setdata((prev) => {
+          return { ...prev, loading: false };
+        });
+      }
+    }
+    FetchData();
+    console.log(query);
+  }, [query, page]);
   return (
     <>
       <SearchBar onSearch={SearchImages} />
+      {data.error && <p className="error">Ooooops... Try reloading the page</p>}
+      {data.items.length > 0 && <ImageGallery arr={data.items} />}
       {data.loading && (
         <div className="color-ring-wrapper-box">
           <ColorRing
@@ -54,7 +72,13 @@ function App() {
           />
         </div>
       )}
-      {data.items.length > 0 && <ImageGallery arr={data.items} />}
+      {data.items.length > 0 && !data.loading && (
+        <button onClick={handleLoadMore} className="app-btn">
+          Load more
+        </button>
+      )}
+
+      <Toaster position="top-right"></Toaster>
     </>
   );
 }

@@ -26,6 +26,7 @@ body {
   margin: 0;
   /* display: flex;
   place-items: center; */
+
   min-width: 320px;
   min-height: 100vh;
 }
@@ -73,4 +74,54 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+p {
+  font-size: 20px;
+  color: #ff0000; /* Red color for error message */
+  text-align: center;
+}
+button.app-btn {
+  display: block;
+  margin: 0 auto;
+}
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(
+    84,
+    83,
+    86,
+    0.8
+  ); /* Adjust the alpha value for transparency */
+}
+.Modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f1eded;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 80%;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Modal img {
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.Modal p {
+  margin: 0;
+  font-size: 16px;
+  color: #1a1a1a;
+}
+.div {
+  margin: 0 auto;
 }

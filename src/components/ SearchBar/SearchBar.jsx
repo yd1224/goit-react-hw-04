@@ -1,7 +1,12 @@
 import css from "./SearchBar.module.css";
+import toast from "react-hot-toast";
 export const SearchBar = ({ onSearch }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (event.target.elements.query.value.trim() === "") {
+      toast.error("Empty string!");
+      return;
+    }
     onSearch(event.target.elements.query.value);
     event.target.reset();
   };
