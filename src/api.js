@@ -12,6 +12,7 @@ export const FetchImages = async (query, page) => {
               client_id: YOUR_ACCESS_KEY,
             },
           }
-    ); 
-    return response.data.results;
+  ); 
+  console.log(response.data);
+    return response.data;
 }

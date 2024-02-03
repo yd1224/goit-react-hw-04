@@ -9,6 +9,7 @@ import { FetchImages } from "../api";
 
 function App() {
   const [query, SetQuery] = useState("");
+  const [ShowBtn, SetShowBtn] = useState(true);
   const [page, SetPage] = useState(1);
   const [data, Setdata] = useState({
     items: [],
@@ -35,12 +36,16 @@ function App() {
       try {
         Setdata((prev) => ({ ...prev, loading: true, error: false }));
 
-        const response = await FetchImages(query, page);
-
+        const response_ = await FetchImages(query, page);
+        const response = response_.results;
         console.log(response);
         Setdata((prev) => {
           return { ...prev, items: [...prev.items, ...response] };
         });
+        SetShowBtn(true);
+        if (page >= Math.floor(response_.total / 20)) {
+          SetShowBtn(false);
+        }
       } catch (error) {
         Setdata((prev) => {
           return { ...prev, error: true };
@@ -54,6 +59,7 @@ function App() {
     FetchData();
     console.log(query);
   }, [query, page]);
+
   return (
     <>
       <SearchBar onSearch={SearchImages} />
@@ -72,12 +78,12 @@ function App() {
           />
         </div>
       )}
-      {data.items.length > 0 && !data.loading && (
+
+      {data.items.length > 0 && !data.loading && ShowBtn && (
         <button onClick={handleLoadMore} className="app-btn">
           Load more
         </button>
       )}
-
       <Toaster position="top-right"></Toaster>
     </>
   );
