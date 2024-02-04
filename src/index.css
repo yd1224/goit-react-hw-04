@@ -125,3 +125,8 @@ button.app-btn {
 .div {
   margin: 0 auto;
 }
+.scroll {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+}

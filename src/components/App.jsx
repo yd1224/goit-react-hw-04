@@ -2,7 +2,7 @@ import "./ SearchBar/SearchBar";
 import "./ImageGallery/ImageGallery";
 import { SearchBar } from "./ SearchBar/SearchBar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ColorRing } from "react-loader-spinner";
 import { Toaster } from "react-hot-toast";
 import { FetchImages } from "../api";
@@ -59,10 +59,49 @@ function App() {
     FetchData();
     console.log(query);
   }, [query, page]);
+  /////////////////////
+  // const buttoRef = useRef();
 
+  // useEffect(() => {
+  //   console.log(buttoRef.current);
+  // });
+  // const handleClick = () => {
+  //   console.log(buttoRef.current);
+  // };
+  // const [clicks, setClicks] = useState(0);
+  // const valueRef = useRef(0);
+  // const handleClick = () => {
+  //   setClicks(clicks + 1);
+  //   console.log(valueRef);
+  // };
+  // const changeRef = () => {
+  //   valueRef.current += 1;
+  // };
+  // const intervalRef = useRef();
+  // useEffect(() => {
+  //   intervalRef.current = window.setInterval(() => {
+  //     console.log(Date.now());
+  //   }, 2000);
+  //   return () => {
+  //     window.clearInterval(intervalRef.current);
+  //   };
+  // }, []);
+  // const StopInterval = () => {
+  //   window.clearInterval(intervalRef.current);
+  // };
+  ///////////////////////
+  const SearchRef = useRef();
+  const handleScroll = () => {
+    const dims = SearchRef.current.getBoundingClientRect();
+
+    window.scrollTo({
+      top: dims.top,
+      behavior: "smooth",
+    });
+  };
   return (
     <>
-      <SearchBar onSearch={SearchImages} />
+      <SearchBar ref={SearchRef} onSearch={SearchImages} />
       {data.error && <p className="error">Ooooops... Try reloading the page</p>}
       {data.items.length > 0 && <ImageGallery arr={data.items} />}
       {data.loading && (
@@ -85,6 +124,16 @@ function App() {
         </button>
       )}
       <Toaster position="top-right"></Toaster>
+      {/* <button onClick={handleClick}>
+        Click {clicks} {valueRef.current}
+      </button>
+      <button onClick={changeRef}>Ref {valueRef.current}</button> */}
+      {/* <button onClick={StopInterval}>Stop Interval</button> */}
+      {data.items.length > 0 && (
+        <button onClick={handleScroll} className="scroll">
+          Scroll to top
+        </button>
+      )}
     </>
   );
 }

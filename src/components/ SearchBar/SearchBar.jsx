@@ -1,18 +1,19 @@
 import css from "./SearchBar.module.css";
 import toast from "react-hot-toast";
-export const SearchBar = ({ onSearch }) => {
+import { forwardRef } from "react";
+export const SearchBar = forwardRef((props, ref) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (event.target.elements.query.value.trim() === "") {
       toast.error("Empty string!");
       return;
     }
-    onSearch(event.target.elements.query.value);
+    props.onSearch(event.target.elements.query.value);
     event.target.reset();
   };
   return (
     <header className={css.header}>
-      <form className={css.form} onSubmit={handleSubmit}>
+      <form ref={ref} className={css.form} onSubmit={handleSubmit}>
         <input
           className={css.input}
           type="text"
@@ -25,4 +26,4 @@ export const SearchBar = ({ onSearch }) => {
       </form>
     </header>
   );
-};
+});
