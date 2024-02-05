@@ -6,8 +6,11 @@ import { useEffect, useState, useRef } from "react";
 import { ColorRing } from "react-loader-spinner";
 import { Toaster } from "react-hot-toast";
 import { FetchImages } from "../api";
+import { useMyCtx } from "../langContext";
 
 function App() {
+  const ctxValue = useMyCtx();
+  console.log(ctxValue);
   const [query, SetQuery] = useState("");
   const [ShowBtn, SetShowBtn] = useState(true);
   const [page, SetPage] = useState(1);
